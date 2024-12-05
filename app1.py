@@ -1,63 +1,66 @@
 import streamlit as st
 import joblib
-import pandas as pd
-import numpy as np
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-# Mengatur konfigurasi halaman
+# Konfigurasi halaman
 st.set_page_config(
-    page_title="Prediksi Kategori Teks dengan SVM",
-    page_icon="📘",
-    layout="wide"
+    page_title="Prediksi Kategori Teks SVM",
+    page_icon="✍️",
+    layout="wide",
+    initial_sidebar_state="expanded"
 )
 
-# Memuat model SVM dan TF-IDF Vectorizer yang sudah disimpan
-svm_model = joblib.load('svm_model.pkl')
-vectorizer = joblib.load('vectorizer.pkl')
+# Memuat model SVM dan TF-IDF Vectorizer
+svm_model = joblib.load("svm_model.pkl")
+vectorizer = joblib.load("vectorizer.pkl")
 
-# Sidebar untuk navigasi
+# Sidebar
 with st.sidebar:
-    st.image("https://via.placeholder.com/150", caption="Logo Aplikasi", use_column_width=True)  # Ganti URL dengan logo Anda
-    st.title("Tentang Aplikasi")
-    st.write(
-        """
-        Aplikasi ini menggunakan model **Support Vector Machine (SVM)** untuk
-        memprediksi kategori teks berdasarkan input pengguna. Model ini 
-        telah dilatih menggunakan data yang relevan.
-        """
-    )
-    st.write("Masukkan teks Anda di kolom utama untuk memulai prediksi!")
+    st.image("https://via.placeholder.com/200", caption="Logo Aplikasi", use_column_width=True)  # Ganti URL gambar jika ada logo
+    st.title("Navigasi")
+    st.write("💡 **Aplikasi ini mendukung prediksi kategori teks menggunakan model SVM yang telah dilatih.**")
+    st.markdown("---")
+    st.subheader("Cara Penggunaan:")
+    st.write("""
+    1. Masukkan teks di area input di halaman utama.
+    2. Klik tombol "Prediksi" untuk melihat hasilnya.
+    3. Hasil kategori akan ditampilkan di bawahnya.
+    """)
+    st.markdown("---")
+    st.caption("📢 **Catatan**: Aplikasi ini hanya untuk demo dan bukan aplikasi final.")
 
-# Header aplikasi
-st.markdown("<h1 style='text-align: center; color: #4CAF50;'>Prediksi Kategori Teks</h1>", unsafe_allow_html=True)
-st.markdown("<p style='text-align: center; color: gray;'>Aplikasi berbasis SVM untuk klasifikasi teks</p>", unsafe_allow_html=True)
+# Header
+st.markdown("<h1 style='text-align: center; color: #4CAF50;'>🧠 Prediksi Kategori Teks</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align: center; color: gray;'>Aplikasi berbasis SVM untuk klasifikasi teks.</p>", unsafe_allow_html=True)
 
-# Membuat input teks untuk prediksi
-st.markdown("---")
-st.markdown("### **Masukkan teks di bawah ini untuk mendapatkan kategori:**")
-input_text = st.text_area("", placeholder="Ketikkan teks Anda di sini...")
+# Input teks
+st.markdown("### Masukkan teks untuk mendapatkan prediksi:")
+input_text = st.text_area("Teks Anda:", placeholder="Ketikkan teks di sini...", height=150)
 
-# Menambahkan tombol untuk memprediksi
+# Hasil prediksi
 if st.button("🔍 Prediksi"):
     if input_text.strip():
-        # Transformasi TF-IDF pada input teks
+        # Transformasi teks menggunakan vectorizer
         input_vector = vectorizer.transform([input_text])
 
-        # Melakukan prediksi
+        # Prediksi
         prediction = svm_model.predict(input_vector)
 
         # Menampilkan hasil prediksi
-        st.markdown("<h3 style='color: #4CAF50;'>Hasil Prediksi:</h3>", unsafe_allow_html=True)
-        st.success(f"📌 **Kategori Teks: {prediction[0]}**")
+        st.markdown("### 🔹 **Hasil Prediksi**")
+        st.success(f"📌 Kategori Teks: **{prediction[0]}**")
     else:
-        st.warning("⚠️ Silakan masukkan teks untuk melakukan prediksi.")
+        st.error("⚠️ Harap masukkan teks terlebih dahulu.")
 
-# Footer
+# Footer dengan visual tambahan
 st.markdown("---")
+cols = st.columns([1, 2, 1])
+with cols[1]:
+    st.image("https://via.placeholder.com/600x100", caption="Terima Kasih telah menggunakan aplikasi ini!", use_column_width=True)
 st.markdown(
     """
-    <footer style="text-align: center;">
-        Dibuat dengan ❤️ oleh <strong>Tim Anda</strong> | 2024
+    <footer style="text-align: center; color: gray; font-size: small;">
+        Dibuat dengan ❤️ oleh Tim Anda | © 2024
     </footer>
     """,
     unsafe_allow_html=True
