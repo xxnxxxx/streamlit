@@ -5,9 +5,11 @@ import numpy as np
 from sklearn.metrics import classification_report
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-# Memuat model SVM dan TF-IDF Vectorizer yang sudah disimpan
-svm_model = joblib.load('svm_model.pkl')
-vectorizer = joblib.load('vectorizer.pkl')
+
+import joblib  # Tambahkan di awal kode
+svm_model = joblib.load('svm_model.pkl')  # Memuat model SVM
+vectorizer = joblib.load('vectorizer.pkl')  # Memuat TF-IDF Vectorizer
+
 
 # Menampilkan judul aplikasi
 st.title("Prediksi Kategori Teks dengan SVM ")
